@@ -21,9 +21,10 @@ refs.input.addEventListener('input', debounce(onInputChange, 500));
 
 function onInputChange(e) {
   API.fetchCountries(e.target.value)
-
     .then(countries => {
-      resetContent();
+      if (countries.length < 1) {
+        return onFetchError();
+      }
       if (countries.length > 10) {
         return alert({
           title: 'Oh No!',
@@ -33,9 +34,8 @@ function onInputChange(e) {
       if (countries.length === 1) {
         return renderCountryMarkup(countries);
       }
-      renderCountryListItem(countries);
+      return renderCountryListItem(countries);
     })
-
     .catch(onFetchError)
     .finally(resetContent());
 }
