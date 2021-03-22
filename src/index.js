@@ -40,6 +40,7 @@ refs.input.addEventListener('input', debounce(onInputChange, 500));
 
 function onInputChange(e) {
   API.fetchCountries(e.target.value)
+
     .then(countries => {
       resetContent();
       if (countries.length > 10) {
@@ -53,7 +54,13 @@ function onInputChange(e) {
       }
       renderCountryListItem(countries);
     })
-    .catch(onFetchError);
+
+    .catch(onFetchError)
+    .finally(resetContent());
+}
+
+function onFetchError(error) {
+  alert('Wrong input value!');
 }
 
 function renderCountryListItem(countries) {
@@ -64,11 +71,6 @@ function renderCountryListItem(countries) {
 function renderCountryMarkup(countries) {
   const markup = countryMarkupTpl(countries[0]);
   refs.countryContent.innerHTML = markup;
-}
-
-function onFetchError(error) {
-  resetContent();
-  alert('Wrong enter!');
 }
 
 function resetContent() {
