@@ -1,26 +1,4 @@
-import './styles.scss';
-
-// import { alert, defaultModules } from '@pnotify/core';
-// import * as PNotifyMobile from '@pnotify/mobile';
-// defaultModules.set(PNotifyMobile, {});
-
-// import 'material-design-icons/iconfont/material-icons.css';
-// import '@pnotify/core/dist/Material.css';
-// import { defaults } from '@pnotify/core';
-
-// defaults.styling = 'material';
-// defaults.icons = 'material';
-// defaults.type = 'error';
-//===================
-import '../node_modules/@pnotify/core/dist/PNotify.css';
-import '../node_modules/@pnotify/mobile/dist/PNotifyMobile.css';
-
-// import PNotify from 'pnotify/dist/es/PNotify';
-// import PnotifyButtons from 'pnotify/dist/es/PNotifyButtons';
-// import 'pnotify/dist/es/PNotifyStyleMaterial.js';
-// PNotify.defaults.styling = 'material';
-// PNotify.defaults.icons = 'material';
-
+import debounce from 'lodash.debounce';
 import {
   alert,
   defaultModules,
@@ -28,13 +6,16 @@ import {
 
 import * as PNotifyMobile from '../node_modules/@pnotify/mobile/dist/PNotifyMobile.js';
 defaultModules.set(PNotifyMobile, {});
-//=============================
+import './styles.scss';
+
+import '../node_modules/@pnotify/core/dist/PNotify.css';
+import '../node_modules/@pnotify/mobile/dist/PNotifyMobile.css';
+
 import API from './js/fetchCountries.js';
 import getRefs from './js/get-refs.js';
 import countryListItemTpl from '../templates/countries-list.hbs';
 import countryMarkupTpl from '../templates/country-markup.hbs';
 const refs = getRefs();
-const debounce = require('lodash.debounce');
 
 refs.input.addEventListener('input', debounce(onInputChange, 500));
 
@@ -64,13 +45,11 @@ function onFetchError(error) {
 }
 
 function renderCountryListItem(countries) {
-  const markup = countries.map(countryListItemTpl).join('');
-  refs.countryList.innerHTML = markup;
+  refs.countryList.innerHTML = countryListItemTpl(countries);
 }
 
 function renderCountryMarkup(countries) {
-  const markup = countryMarkupTpl(countries[0]);
-  refs.countryContent.innerHTML = markup;
+  refs.countryContent.innerHTML = countryMarkupTpl(countries[0]);
 }
 
 function resetContent() {
