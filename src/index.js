@@ -20,11 +20,11 @@ const refs = getRefs();
 refs.input.addEventListener('input', debounce(onInputChange, 500));
 
 function onInputChange(e) {
+  if (e.target.value.length < 1) {
+    return onFetchError();
+  }
   API.fetchCountries(e.target.value)
     .then(countries => {
-      if (countries.length < 1) {
-        return onFetchError();
-      }
       if (countries.length > 10) {
         return alert({
           title: 'Oh No!',
