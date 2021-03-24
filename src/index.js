@@ -20,24 +20,21 @@ const refs = getRefs();
 refs.input.addEventListener('input', debounce(onInputChange, 500));
 
 function onInputChange(e) {
-  if (e.target.value.length < 1) {
-    return onFetchError();
-  }
-  API.fetchCountries(e.target.value)
-    .then(countries => {
-      if (countries.length > 10) {
-        return alert({
-          title: 'Oh No!',
-          text: 'Too many matches found. Please enter a more specific query!',
-        });
+  if (e.target.value.length >= 1) {
+    API.fetchCountries(e.target.value).then(countries => {
+      if (countries.length >= 2 && countries.length <= 10) {
+        return renderCountryListItem(countries);
       }
       if (countries.length === 1) {
         return renderCountryMarkup(countries);
       }
-      return renderCountryListItem(countries);
-    })
-    .catch(onFetchError)
-    .finally(resetContent());
+      alert({
+        title: 'Oh No!',
+        text: 'Too many matches found. Please enter a more specific query!',
+      });
+    });
+    resetContent();
+  } else onFetchError();
 }
 
 function onFetchError(error) {
