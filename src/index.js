@@ -45,11 +45,11 @@ async function onInputChange(e) {
       const response = await API.fetchCountries(e.target.value);
 
       if (response.length >= 2 && response.length <= 10) {
-        return await renderCountryListItem(response);
+        return renderCountryListItem(response);
       }
 
       if (response.length === 1) {
-        return await renderCountryMarkup(response);
+        return renderCountryMarkup(response);
       }
 
       await alert({
